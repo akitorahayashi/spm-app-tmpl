@@ -20,6 +20,7 @@ jobs:
         uses: ./.github/actions/setup
         with:
           setup_ruby: true
+          setup_mint: false
 
       - name: Run Tests
         run: just test

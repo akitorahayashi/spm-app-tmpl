@@ -36,13 +36,13 @@ lane :build_for_testing do |options|
   xcargs = xcargs_items.join(' ')
   
   get_simulator_info(options)
-  udid = Actions.lane_context[:SIMULATOR_UDID]
+  destination = Actions.lane_context[:SIMULATOR_DESTINATION]
   
   Dir.chdir(package_dir) do
     cmd = [
       "xcodebuild build-for-testing",
       "-scheme #{SCHEMES[:app]}",
-      "-destination 'platform=iOS Simulator,id=#{udid}'",
+      "-destination '#{destination}'",
       "-derivedDataPath '#{derived_data_path}'",
       "-configuration #{configuration}",
       "-quiet"

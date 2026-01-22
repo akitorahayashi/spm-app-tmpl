@@ -8,7 +8,7 @@ require 'json'
 desc "Run all tests"
 lane :test do |options|
   get_simulator_info(options)
-  udid = Actions.lane_context[:SIMULATOR_UDID]
+  destination = Actions.lane_context[:SIMULATOR_DESTINATION]
  
   project_root = File.expand_path("../..", __dir__)
   package_dir = File.expand_path("TemplateApp.swiftpm", project_root)
@@ -32,7 +32,7 @@ lane :test do |options|
     cmd = [
       "xcodebuild test",
       "-scheme #{SCHEMES[:app]}",
-      "-destination 'platform=iOS Simulator,id=#{udid}'",
+      "-destination '#{destination}'",
       "-derivedDataPath '#{derived_data}'",
       "-configuration #{configuration}",
       "-resultBundlePath '#{result_path}'",
@@ -49,7 +49,7 @@ end
 desc "Run tests without building"
 lane :test_without_building do |options|
   get_simulator_info(options)
-  udid = Actions.lane_context[:SIMULATOR_UDID]
+  destination = Actions.lane_context[:SIMULATOR_DESTINATION]
  
   project_root = File.expand_path("../..", __dir__)
   package_dir = File.expand_path("TemplateApp.swiftpm", project_root)
@@ -63,7 +63,7 @@ lane :test_without_building do |options|
     cmd = [
       "xcodebuild test-without-building",
       "-scheme #{SCHEMES[:app]}",
-      "-destination 'platform=iOS Simulator,id=#{udid}'",
+      "-destination '#{destination}'",
       "-derivedDataPath '#{derived_data}'",
       "-configuration #{configuration}",
       "-resultBundlePath '#{result_path}'",
@@ -83,11 +83,17 @@ private_lane :get_simulator_info do |options|
     if is_ci?
       udid = find_available_iphone_simulator_udid
       if udid.nil? || udid.empty?
-        UI.user_error!("Could not get UDID for an available iPhone simulator in the CI environment")
+        UI.message("No available simulator UDID found in CI. Falling back to simulator name.")
       end
     else
       UI.user_error!("UDID is not specified. Please pass the udid option from the justfile.")
     end
+  end
+
+  if udid.nil? || udid.empty?
+    Actions.lane_context[:SIMULATOR_DESTINATION] = "platform=iOS Simulator,name=iPhone 17 Pro"
+  else
+    Actions.lane_context[:SIMULATOR_DESTINATION] = "platform=iOS Simulator,id=#{udid}"
   end
   Actions.lane_context[:SIMULATOR_UDID] = udid
 end

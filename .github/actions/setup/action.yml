@@ -6,6 +6,10 @@ inputs:
     description: 'Whether to setup Ruby'
     required: true
     default: 'false'
+  setup_mint:
+    description: 'Whether to bootstrap Mint packages'
+    required: true
+    default: 'false'
 
 runs:
   using: composite
@@ -36,6 +40,7 @@ runs:
       uses: extractions/setup-just@v2
 
     - name: Bootstrap Mint packages
+      if: inputs.setup_mint == 'true'
       run: mint bootstrap
       shell: bash
 
