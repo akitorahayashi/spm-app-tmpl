@@ -1,0 +1,18 @@
+# Fastfile - Orchestrator
+# This file serves as the entry point for all Fastlane lanes.
+# Lane implementations are modularized in the lanes/ directory.
+
+default_platform(:ios)
+
+require_relative 'config'
+
+before_all do
+  # Set the global log path default to the project-local directory
+  # This becomes the fallback if buildlog_path is not specified
+  ENV["FL_BUILDLOG_PATH"] = LOGS_PATH
+end
+
+platform :ios do
+  import 'lanes/build.rb'
+  import 'lanes/test.rb'
+end

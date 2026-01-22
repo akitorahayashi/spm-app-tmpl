@@ -1,0 +1,33 @@
+name: Run Tests
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    runs-on: macos-15
+    permissions:
+      contents: read
+    timeout-minutes: 30
+    env:
+      MINT_PATH: ${{ github.workspace }}/.mint
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup environment
+        uses: ./.github/actions/setup
+        with:
+          setup_ruby: true
+
+      - name: Run Tests
+        run: just test
+
+      - name: Upload Test Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: ${{ github.workspace }}/fastlane/build/test-results/TestResults.xcresult
+          retention-days: 3
