@@ -100,17 +100,22 @@ end
 
 desc "Find an available iPhone simulator UDID (CI helper)"
 private_lane :find_available_iphone_simulator_udid do
-  devices_output = sh("xcrun simctl list devices available -j")
-  devices = JSON.parse(devices_output)
-  
+  devices_output = sh("xcrun simctl list devices available -j 2>/dev/null", log: false)
+  json_start = devices_output.index('{')
+  json_end = devices_output.rindex('}')
+  return nil if json_start.nil? || json_end.nil?
+
+  devices = JSON.parse(devices_output[json_start..json_end])
+
+  fallback_udid = nil
   devices['devices'].each do |runtime, device_list|
     next unless runtime.include?('iOS')
     device_list.each do |device|
-      if device['name'].include?('iPhone') && device['isAvailable']
-        return device['udid']
-      end
+      next unless device['isAvailable']
+      return device['udid'] if device['name'].include?('iPhone')
+      fallback_udid ||= device['udid']
     end
   end
-  
-  nil
+
+  fallback_udid
 end
