@@ -12,8 +12,8 @@ LOGS_PATH = "fastlane/logs"
 TEST_LOGS_PATH = "#{LOGS_PATH}/test"
 BUILD_LOGS_PATH = "#{LOGS_PATH}/build"
 
-TEST_RESULTS_PATH = "#{BUILD_PATH}/test-results"
-TEST_RESULT_PATH = "#{TEST_RESULTS_PATH}/TestResults.xcresult"
+TEST_RESULTS_PATH = "fastlane/#{BUILD_PATH}/test-results"
+TEST_RESULT_PATH = "fastlane/#{TEST_RESULTS_PATH}/TestResults.xcresult"
 
 # === Archive Paths ===
 DEBUG_EXPORT_BASE = "fastlane/build/debug"
