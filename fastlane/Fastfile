@@ -9,7 +9,7 @@ require_relative 'config'
 before_all do
   # Set the global log path default to the project-local directory
   # This becomes the fallback if buildlog_path is not specified
-  ENV["FL_BUILDLOG_PATH"] = LOGS_PATH
+  ENV["FL_BUILDLOG_PATH"] = LOGS_ROOT
 end
 
 platform :ios do

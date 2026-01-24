@@ -9,11 +9,8 @@ desc "Run all tests"
 lane :test do |options|
   get_simulator_info(options)
   destination = Actions.lane_context[:SIMULATOR_DESTINATION]
- 
-  project_root = File.expand_path("../..", __dir__)
-  package_dir = File.expand_path("TemplateApp.swiftpm", project_root)
-  result_path = File.expand_path(TEST_RESULT_PATH, project_root)
-  sh("rm -rf \"#{result_path}\"")
+
+  sh("rm -rf \"#{TEST_RESULT_BUNDLE}\"")
   
   configuration = options[:configuration] || CONFIGURATIONS[:debug]
   passed_xcargs = options[:xcargs] || ""
@@ -26,16 +23,16 @@ lane :test do |options|
   xcargs_items << passed_xcargs unless passed_xcargs.empty?
   xcargs = xcargs_items.join(' ')
   
-  derived_data = File.expand_path("#{TEST_DERIVED_DATA_PATH}/#{configuration}", project_root)
+  derived_data = test_derived_data_dir(configuration)
 
-  Dir.chdir(package_dir) do
+  Dir.chdir(APP_PACKAGE_DIR) do
     cmd = [
       "xcodebuild test",
       "-scheme #{SCHEMES[:app]}",
       "-destination '#{destination}'",
       "-derivedDataPath '#{derived_data}'",
       "-configuration #{configuration}",
-      "-resultBundlePath '#{result_path}'",
+      "-resultBundlePath '#{TEST_RESULT_BUNDLE}'",
       "-enableCodeCoverage YES",
       "-quiet"
     ]
@@ -50,23 +47,20 @@ desc "Run tests without building"
 lane :test_without_building do |options|
   get_simulator_info(options)
   destination = Actions.lane_context[:SIMULATOR_DESTINATION]
- 
-  project_root = File.expand_path("../..", __dir__)
-  package_dir = File.expand_path("TemplateApp.swiftpm", project_root)
-  result_path = File.expand_path(TEST_RESULT_PATH, project_root)
-  sh("rm -rf \"#{result_path}\"")
+
+  sh("rm -rf \"#{TEST_RESULT_BUNDLE}\"")
   
   configuration = options[:configuration] || CONFIGURATIONS[:debug]
-  derived_data = File.expand_path("#{TEST_DERIVED_DATA_PATH}/#{configuration}", project_root)
+  derived_data = test_derived_data_dir(configuration)
  
-  Dir.chdir(package_dir) do
+  Dir.chdir(APP_PACKAGE_DIR) do
     cmd = [
       "xcodebuild test-without-building",
       "-scheme #{SCHEMES[:app]}",
       "-destination '#{destination}'",
       "-derivedDataPath '#{derived_data}'",
       "-configuration #{configuration}",
-      "-resultBundlePath '#{result_path}'",
+      "-resultBundlePath '#{TEST_RESULT_BUNDLE}'",
       "-quiet"
     ]
 
