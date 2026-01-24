@@ -24,7 +24,7 @@
 # Indentation & Spacing
 #-------------------------------------------------------------------
 # Indentation settings
---indent 2                       # Set indentation width to 4 spaces
+--indent 2                       # Set indentation width to 2 spaces
 --indentcase true               # Indent case statements relative to switch
 --maxwidth 120                   # Maximum line width is 120 characters
 --trimwhitespace always          # Remove leading and trailing whitespace

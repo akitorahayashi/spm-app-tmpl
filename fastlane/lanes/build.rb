@@ -46,7 +46,7 @@ lane :build_for_testing do |options|
       "-quiet"
     ]
     
-    cmd << "-xcargs #{xcargs}" unless xcargs.empty?
+    cmd << xcargs unless xcargs.empty?
     
     sh(cmd.join(' '))
   end
@@ -85,7 +85,7 @@ private_lane :build_for_configuration do |options|
       "-quiet"
     ]
     
-    cmd << "-xcargs #{passed_xcargs}" unless passed_xcargs.empty?
+    cmd << passed_xcargs unless passed_xcargs.empty?
     
     sh(cmd.join(' '))
   end

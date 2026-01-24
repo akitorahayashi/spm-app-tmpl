@@ -216,8 +216,8 @@ To rename the project:
 
 ### Testing
 
-- Write tests in `Tests/AppModuleTests/`
-- Import modules with `@testable import AppCore`
+- Write tests in `Tests/AppTests/`
+- Import modules with `@testable import View`
 - Use Swift Testing framework (`import Testing`, `@Test` macro)
 - Run locally with `just test`
 - CI automatically runs tests on PR
