@@ -1,0 +1,51 @@
+name: Setup
+description: Common setup steps for iOS SwiftPM project workflows
+
+inputs:
+  setup_ruby:
+    description: 'Whether to setup Ruby'
+    required: true
+    default: 'false'
+  setup_mint:
+    description: 'Whether to bootstrap Mint packages'
+    required: true
+    default: 'false'
+
+runs:
+  using: composite
+  steps:
+    - name: Cache Mint packages
+      uses: actions/cache@v4
+      id: cache-mint-packages
+      with:
+        path: ${{ github.workspace }}/.mint
+        key: ${{ runner.os }}-mint-${{ hashFiles('**/Mintfile') }}
+        restore-keys: |
+          ${{ runner.os }}-mint-
+
+    - name: Cache SwiftPM dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/Library/Developer/Xcode/DerivedData/*/SourcePackages
+        key: ${{ runner.os }}-swiftpm-${{ hashFiles('**/Package.swift') }}
+        restore-keys: |
+          ${{ runner.os }}-swiftpm-
+
+    - name: Install Mint
+      run: brew install mint
+      shell: bash
+
+    - name: Install just
+      uses: extractions/setup-just@v2
+
+    - name: Bootstrap Mint packages
+      if: inputs.setup_mint == 'true'
+      run: mint bootstrap
+      shell: bash
+
+    - name: Setup Ruby
+      if: inputs.setup_ruby == 'true'
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true

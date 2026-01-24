@@ -1,0 +1,17 @@
+name: TemplateApp CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  run-linters:
+    name: Run Linters
+    uses: ./.github/workflows/run-linters.yml
+    
+  build-and-test:
+    name: Run Tests
+    uses: ./.github/workflows/run-tests.yml

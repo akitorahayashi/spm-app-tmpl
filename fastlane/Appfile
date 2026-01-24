@@ -1,0 +1,4 @@
+# === Placeholder for App Store Connect API Key ===
+app_identifier("com.akitorahayashi.TemplateApp")
+apple_id(ENV['APPLE_ID'])
+team_id(ENV['TEAM_ID'])
