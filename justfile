@@ -2,15 +2,18 @@
 # justfile for TemplateApp automation
 # ==============================================================================
 
-set dotenv-load
+set dotenv-load := true
 
 # --- PROJECT SETTINGS ---
+
 APP_BUNDLE_ID := "com.akitorahayashi.TemplateApp"
 
 # --- PROJECT SPECIFIC PATHS ---
+
 HOME_DIR := env("HOME")
 
 # --- ENVIRONMENT VARIABLES ---
+
 TEAM_ID := env("TEAM_ID", "")
 DEV_SIMULATOR_UDID := env("DEV_SIMULATOR_UDID", "")
 TEST_SIMULATOR_UDID := env("TEST_SIMULATOR_UDID", "")
@@ -18,6 +21,7 @@ TEST_SIMULATOR_UDID := env("TEST_SIMULATOR_UDID", "")
 # ==============================================================================
 # Modules
 # ==============================================================================
+
 # Load implementations under the fastlane directory as a module named 'fastlane'
 mod fastlane "fastlane/just/main.just"
 
@@ -69,30 +73,30 @@ resolve-pkg:
 
 # Boot local simulator
 boot:
-    @if [ -z "{{DEV_SIMULATOR_UDID}}" ]; then \
+    @if [ -z "{{ DEV_SIMULATOR_UDID }}" ]; then \
         echo "DEV_SIMULATOR_UDID is not set. Please set it in your .env"; \
         exit 1; \
     fi
-    @echo "Booting development simulator: UDID: {{DEV_SIMULATOR_UDID}}"
-    @if xcrun simctl list devices | grep -q "{{DEV_SIMULATOR_UDID}} (Booted)"; then \
+    @echo "Booting development simulator: UDID: {{ DEV_SIMULATOR_UDID }}"
+    @if xcrun simctl list devices | grep -q "{{ DEV_SIMULATOR_UDID }} (Booted)"; then \
         echo "⚡️ Simulator is already booted."; \
     else \
-        xcrun simctl boot {{DEV_SIMULATOR_UDID}}; \
+        xcrun simctl boot {{ DEV_SIMULATOR_UDID }}; \
         echo "✅ Simulator booted."; \
     fi
     @open -a Simulator
 
 # Boot test simulator
 boot-test:
-    @if [ -z "{{TEST_SIMULATOR_UDID}}" ]; then \
+    @if [ -z "{{ TEST_SIMULATOR_UDID }}" ]; then \
         echo "TEST_SIMULATOR_UDID is not set. Please set it in your .env"; \
         exit 1; \
     fi
-    @echo "Booting test simulator: UDID: {{TEST_SIMULATOR_UDID}}"
-    @if xcrun simctl list devices | grep -q "{{TEST_SIMULATOR_UDID}} (Booted)"; then \
+    @echo "Booting test simulator: UDID: {{ TEST_SIMULATOR_UDID }}"
+    @if xcrun simctl list devices | grep -q "{{ TEST_SIMULATOR_UDID }} (Booted)"; then \
         echo "⚡️ Simulator is already booted."; \
     else \
-        xcrun simctl boot {{TEST_SIMULATOR_UDID}}; \
+        xcrun simctl boot {{ TEST_SIMULATOR_UDID }}; \
         echo "✅ Simulator booted."; \
     fi
     @open -a Simulator
@@ -107,12 +111,18 @@ siml:
 
 # Fix formatting and linting issues
 fix:
+    @just --fmt --unstable
+    @find fastlane/just -name "*.just" -exec just --fmt --unstable --justfile {} \;
     @echo "Running SwiftFormat..."
     @mint run swiftformat TemplateApp.swiftpm/Sources
+    @echo "Running SwiftLint..."
+    @mint run swiftlint --fix TemplateApp.swiftpm/Sources
     @echo "✅ Formatting complete."
 
 # Check formatting and linting (CI-safe)
-check:
+check: fix
+    @just --fmt --check --unstable
+    @find fastlane/just -name "*.just" -exec just --fmt --check --unstable --justfile {} \;
     @echo "Checking code style with SwiftFormat..."
     @mint run swiftformat --lint TemplateApp.swiftpm/Sources
     @echo "Running SwiftLint..."
