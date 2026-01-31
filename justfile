@@ -11,7 +11,6 @@ APP_BUNDLE_ID := "com.akitorahayashi.TemplateApp"
 # --- PROJECT SPECIFIC PATHS ---
 
 PACKAGE_DIR := "App.swiftpm"
-
 HOME_DIR := env("HOME")
 
 # --- ENVIRONMENT VARIABLES ---
@@ -60,13 +59,13 @@ setup:
 
 # Open project in Xcode
 open:
-    @xed {{PACKAGE_DIR}}
+    @xed {{ PACKAGE_DIR }}
 
 # Reset SwiftPM cache and dependencies
 resolve-pkg:
     @echo "Removing SwiftPM build and cache..."
     @rm -rf .build
-    @rm -rf {{PACKAGE_DIR}}/.build
+    @rm -rf {{ PACKAGE_DIR }}/.build
     @echo "✅ SwiftPM build and cache removed."
 
 # ==============================================================================
@@ -116,9 +115,9 @@ fix:
     @just --fmt --unstable
     @find fastlane/just -name "*.just" -exec just --fmt --unstable --justfile {} \;
     @echo "Running SwiftFormat..."
-    @mint run swiftformat {{PACKAGE_DIR}}/Sources
+    @mint run swiftformat {{ PACKAGE_DIR }}/Sources
     @echo "Running SwiftLint..."
-    @mint run swiftlint --fix {{PACKAGE_DIR}}/Sources
+    @mint run swiftlint --fix {{ PACKAGE_DIR }}/Sources
     @echo "✅ Formatting complete."
 
 # Check formatting and linting (CI-safe)
@@ -126,9 +125,9 @@ check: fix
     @just --fmt --check --unstable
     @find fastlane/just -name "*.just" -exec just --fmt --check --unstable --justfile {} \;
     @echo "Checking code style with SwiftFormat..."
-    @mint run swiftformat --lint {{PACKAGE_DIR}}/Sources
+    @mint run swiftformat --lint {{ PACKAGE_DIR }}/Sources
     @echo "Running SwiftLint..."
-    @mint run swiftlint lint {{PACKAGE_DIR}}/Sources
+    @mint run swiftlint lint {{ PACKAGE_DIR }}/Sources
     @echo "✅ Linting complete."
 
 # ==============================================================================
@@ -153,8 +152,13 @@ run-release:
 
 # Run all tests
 test:
-    @just fastlane::test
+    @just unit-test 
+    @just build-test
 
-# Build for testing
+# Run unit tests
+unit-test:
+    @swift test --package-path Packages
+
+# Build for testing (Verifies App.swiftpm build)
 build-test:
     @just fastlane::build-test

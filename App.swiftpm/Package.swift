@@ -30,10 +30,16 @@ let package = Package(
       ]
     ),
   ],
+  dependencies: [
+    .package(path: "../Packages")
+  ],
   targets: [
     .executableTarget(
       name: "App",
-      dependencies: ["View"],
+      dependencies: [
+        "View",
+        .product(name: "CounterFeature", package: "Packages")
+      ],
       path: "Sources/App",
       resources: [
         .process("Assets.xcassets"),
@@ -41,13 +47,12 @@ let package = Package(
     ),
     .target(
       name: "View",
+      dependencies: [
+        .product(name: "CounterFeature", package: "Packages")
+      ],
       path: "Sources/View"
     ),
-    .testTarget(
-      name: "AppTests",
-      dependencies: ["View"],
-      path: "Tests/AppTests"
-    ),
+
   ],
   swiftLanguageModes: [.v6]
 )

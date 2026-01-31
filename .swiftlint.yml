@@ -11,6 +11,7 @@
 # Paths to include in linting
 included:
   - App.swiftpm/**/*.swift
+  - Packages/**/*.swift
 
 #-------------------------------------------------------------------
 # Analysis Targets
@@ -19,6 +20,9 @@ excluded:
   - .git
   - .build
   - .swiftpm
+  - "**/.build"
+  - "**/.swiftpm"
+  - reference
   - references
   - build
   - xcbuild

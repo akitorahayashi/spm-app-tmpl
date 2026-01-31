@@ -33,4 +33,4 @@ run-release:
 # Build for testing
 [no-cd]
 build-test:
-    @just fastlane::_run_fastlane "build_for_testing"
+    @just fastlane::_run_fastlane "build_for_testing udid:{{ TEST_SIMULATOR_UDID }}"
