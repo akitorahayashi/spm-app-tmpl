@@ -6,7 +6,7 @@ This project is an iOS application template built with SwiftPM (Swift Package Ma
 
 ```
 .
-├── TemplateApp.swiftpm/              # Swift Package (no .xcodeproj)
+├── App.swiftpm/              # Swift Package (no .xcodeproj)
 │   ├── Package.swift                 # Package manifest - all project configuration
 │   ├── Sources/
 │   │   ├── App/                      # Executable target (app entry point)
@@ -156,7 +156,7 @@ Reusable composite action:
 ### Essential Commands
 
 - `just setup`: Install dependencies, create `.env`, bootstrap tools
-- `just open`: Open `TemplateApp.swiftpm` in Xcode
+- `just open`: Open `App.swiftpm` in Xcode
 - `just check`: Run SwiftFormat and SwiftLint (CI-safe)
 - `just test`: Run all tests via fastlane
 - `just build-debug`: Build debug archive
