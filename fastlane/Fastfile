@@ -14,5 +14,5 @@ end
 
 platform :ios do
   import 'lanes/build.rb'
-  import 'lanes/test.rb'
+
 end

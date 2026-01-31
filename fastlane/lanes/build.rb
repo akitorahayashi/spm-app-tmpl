@@ -90,3 +90,52 @@ private_lane :build_for_configuration do |options|
     sh(cmd.join(' '))
   end
 end
+
+desc "Get simulator information based on environment"
+private_lane :get_simulator_info do |options|
+  udid = options[:udid]
+  if udid.nil? || udid.empty?
+    if is_ci?
+      udid = find_available_iphone_simulator_udid
+      if udid.nil? || udid.empty?
+        UI.message("No available simulator UDID found in CI. Falling back to simulator name.")
+      end
+    else
+      UI.user_error!("UDID is not specified. Please pass the udid option from the justfile.")
+    end
+  end
+
+  if udid.nil? || udid.empty?
+    Actions.lane_context[:SIMULATOR_DESTINATION] = "platform=iOS Simulator,name=iPhone 17 Pro"
+  else
+    Actions.lane_context[:SIMULATOR_DESTINATION] = "platform=iOS Simulator,id=#{udid}"
+  end
+  Actions.lane_context[:SIMULATOR_UDID] = udid
+end
+
+desc "Find an available iPhone simulator UDID (CI helper)"
+private_lane :find_available_iphone_simulator_udid do
+  devices_output = sh("xcrun simctl list devices available -j 2>/dev/null", log: false)
+  json_start = devices_output.index('{')
+  json_end = devices_output.rindex('}')
+  next nil if json_start.nil? || json_end.nil?
+
+  devices = JSON.parse(devices_output[json_start..json_end])
+
+  fallback_udid = nil
+  found_udid = nil
+  devices['devices'].each do |runtime, device_list|
+    next unless runtime.include?('iOS')
+    device_list.each do |device|
+      next unless device['isAvailable']
+      if device['name'].include?('iPhone')
+        found_udid = device['udid']
+        break
+      end
+      fallback_udid ||= device['udid']
+    end
+    break if found_udid
+  end
+
+  found_udid || fallback_udid
+end

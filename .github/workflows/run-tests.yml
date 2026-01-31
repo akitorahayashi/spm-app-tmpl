@@ -9,6 +9,9 @@ jobs:
     permissions:
       contents: read
     timeout-minutes: 30
+    strategy:
+      matrix:
+        test-type: [unit, build]
     env:
       MINT_PATH: ${{ github.workspace }}/.mint
     steps:
@@ -23,12 +26,4 @@ jobs:
           setup_mint: false
 
       - name: Run Tests
-        run: just test
-
-      - name: Upload Test Results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: ${{ github.workspace }}/fastlane/build/test-results/TestResults.xcresult
-          retention-days: 3
+        run: just ${{ matrix.test-type }}-test
