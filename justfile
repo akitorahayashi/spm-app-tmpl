@@ -10,6 +10,8 @@ APP_BUNDLE_ID := "com.akitorahayashi.TemplateApp"
 
 # --- PROJECT SPECIFIC PATHS ---
 
+PACKAGE_DIR := "App.swiftpm"
+
 HOME_DIR := env("HOME")
 
 # --- ENVIRONMENT VARIABLES ---
@@ -58,13 +60,13 @@ setup:
 
 # Open project in Xcode
 open:
-    @xed App.swiftpm
+    @xed {{PACKAGE_DIR}}
 
 # Reset SwiftPM cache and dependencies
 resolve-pkg:
     @echo "Removing SwiftPM build and cache..."
     @rm -rf .build
-    @rm -rf App.swiftpm/.build
+    @rm -rf {{PACKAGE_DIR}}/.build
     @echo "✅ SwiftPM build and cache removed."
 
 # ==============================================================================
@@ -114,9 +116,9 @@ fix:
     @just --fmt --unstable
     @find fastlane/just -name "*.just" -exec just --fmt --unstable --justfile {} \;
     @echo "Running SwiftFormat..."
-    @mint run swiftformat App.swiftpm/Sources
+    @mint run swiftformat {{PACKAGE_DIR}}/Sources
     @echo "Running SwiftLint..."
-    @mint run swiftlint --fix App.swiftpm/Sources
+    @mint run swiftlint --fix {{PACKAGE_DIR}}/Sources
     @echo "✅ Formatting complete."
 
 # Check formatting and linting (CI-safe)
@@ -124,9 +126,9 @@ check: fix
     @just --fmt --check --unstable
     @find fastlane/just -name "*.just" -exec just --fmt --check --unstable --justfile {} \;
     @echo "Checking code style with SwiftFormat..."
-    @mint run swiftformat --lint App.swiftpm/Sources
+    @mint run swiftformat --lint {{PACKAGE_DIR}}/Sources
     @echo "Running SwiftLint..."
-    @mint run swiftlint lint App.swiftpm/Sources
+    @mint run swiftlint lint {{PACKAGE_DIR}}/Sources
     @echo "✅ Linting complete."
 
 # ==============================================================================
