@@ -17,7 +17,7 @@ This template uses a `.swiftpm` package structure instead of a traditional `.xco
 ## Architecture
 
 ```
-TemplateApp.swiftpm/
+App.swiftpm/
 ├── Package.swift              # Project configuration
 ├── Sources/
 │   ├── App/                   # App entry point and resources
@@ -174,7 +174,7 @@ The project includes GitHub Actions workflows:
 
 ```
 .
-├── TemplateApp.swiftpm/       # Swift Package
+├── App.swiftpm/               # Swift Package
 │   ├── Package.swift          # Package manifest
 │   ├── Sources/               # Source code
 │   └── Tests/                 # Test code

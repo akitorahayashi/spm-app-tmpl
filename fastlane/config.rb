@@ -8,7 +8,7 @@ APP_NAME = "TemplateApp"
 # This file is at <project>/fastlane/config.rb
 FASTLANE_DIR = __dir__
 PROJECT_ROOT = File.expand_path('..', FASTLANE_DIR)
-APP_PACKAGE_DIR = File.join(PROJECT_ROOT, "#{APP_NAME}.swiftpm")
+APP_PACKAGE_DIR = File.join(PROJECT_ROOT, "App.swiftpm")
 
 # === Scheme Constants ===
 SCHEMES = {

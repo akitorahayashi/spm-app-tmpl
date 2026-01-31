@@ -10,7 +10,7 @@
 
 # Paths to include in linting
 included:
-  - TemplateApp.swiftpm/**/*.swift
+  - App.swiftpm/**/*.swift
 
 #-------------------------------------------------------------------
 # Analysis Targets

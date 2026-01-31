@@ -58,13 +58,13 @@ setup:
 
 # Open project in Xcode
 open:
-    @xed TemplateApp.swiftpm
+    @xed App.swiftpm
 
 # Reset SwiftPM cache and dependencies
 resolve-pkg:
     @echo "Removing SwiftPM build and cache..."
     @rm -rf .build
-    @rm -rf TemplateApp.swiftpm/.build
+    @rm -rf App.swiftpm/.build
     @echo "✅ SwiftPM build and cache removed."
 
 # ==============================================================================
@@ -114,9 +114,9 @@ fix:
     @just --fmt --unstable
     @find fastlane/just -name "*.just" -exec just --fmt --unstable --justfile {} \;
     @echo "Running SwiftFormat..."
-    @mint run swiftformat TemplateApp.swiftpm/Sources
+    @mint run swiftformat App.swiftpm/Sources
     @echo "Running SwiftLint..."
-    @mint run swiftlint --fix TemplateApp.swiftpm/Sources
+    @mint run swiftlint --fix App.swiftpm/Sources
     @echo "✅ Formatting complete."
 
 # Check formatting and linting (CI-safe)
@@ -124,9 +124,9 @@ check: fix
     @just --fmt --check --unstable
     @find fastlane/just -name "*.just" -exec just --fmt --check --unstable --justfile {} \;
     @echo "Checking code style with SwiftFormat..."
-    @mint run swiftformat --lint TemplateApp.swiftpm/Sources
+    @mint run swiftformat --lint App.swiftpm/Sources
     @echo "Running SwiftLint..."
-    @mint run swiftlint lint TemplateApp.swiftpm/Sources
+    @mint run swiftlint lint App.swiftpm/Sources
     @echo "✅ Linting complete."
 
 # ==============================================================================
