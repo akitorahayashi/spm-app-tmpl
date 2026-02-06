@@ -155,6 +155,18 @@ test:
     @just unit-test 
     @just build-test
 
+# Run minimal snapshot test for App.swiftpm
+snapshot:
+    @if [ -z "{{ TEST_SIMULATOR_UDID }}" ]; then \
+        echo "TEST_SIMULATOR_UDID is not set. Please set it in your .env"; \
+        exit 1; \
+    fi
+    @cd {{ PACKAGE_DIR }} && xcodebuild test \
+        -scheme TemplateApp \
+        -destination "platform=iOS Simulator,id={{ TEST_SIMULATOR_UDID }}" \
+        -only-testing:TemplateAppSnapshotTests \
+        -quiet
+
 # Run unit tests
 unit-test:
     @swift test --package-path Packages
@@ -162,3 +174,21 @@ unit-test:
 # Build for testing (Verifies App.swiftpm build)
 build-test:
     @just fastlane::build-test
+
+# ==============================================================================
+# Cleanup
+# ==============================================================================
+
+# Clean build artifacts, caches, and generated files
+clean:
+    @echo "Cleaning build artifacts and caches..."
+    @rm -rf .build
+    @rm -rf {{ PACKAGE_DIR }}/.build
+    @rm -rf fastlane/build
+    @rm -rf fastlane/logs
+    @rm -rf fastlane/report.xml
+    @rm -rf build
+    @rm -rf .cache
+    @rm -rf Packages/.swiftpm
+    @rm -rf Packages/.build
+    @echo "✅ Cleanup complete."

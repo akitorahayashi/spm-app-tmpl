@@ -52,6 +52,13 @@ let package = Package(
       ],
       path: "Sources/View"
     ),
+    .testTarget(
+      name: "TemplateAppSnapshotTests",
+      dependencies: [
+        "View"
+      ],
+      path: "Tests/Snapshots"
+    ),
 
   ],
   swiftLanguageModes: [.v6]
