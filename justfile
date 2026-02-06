@@ -191,6 +191,4 @@ clean:
     @rm -rf .cache
     @rm -rf Packages/.swiftpm
     @rm -rf Packages/.build
-    @echo "Cleaning Mint cache..."
-    @mint run mint uninstall --all || true
     @echo "✅ Cleanup complete."
