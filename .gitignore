@@ -39,3 +39,4 @@ fastlane/report.xml
 project.yml
 
 .tmp/
+App.swiftpm/Tests/Snapshots/snapshots/*.png

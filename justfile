@@ -155,6 +155,18 @@ test:
     @just unit-test 
     @just build-test
 
+# Run minimal snapshot test for App.swiftpm
+snapshot:
+    @if [ -z "{{ TEST_SIMULATOR_UDID }}" ]; then \
+        echo "TEST_SIMULATOR_UDID is not set. Please set it in your .env"; \
+        exit 1; \
+    fi
+    @cd {{ PACKAGE_DIR }} && xcodebuild test \
+        -scheme TemplateApp \
+        -destination "platform=iOS Simulator,id={{ TEST_SIMULATOR_UDID }}" \
+        -only-testing:TemplateAppSnapshotTests \
+        -quiet
+
 # Run unit tests
 unit-test:
     @swift test --package-path Packages
