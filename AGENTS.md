@@ -8,7 +8,7 @@ iOS app template using SwiftPM (.swiftpm package, no .xcodeproj). Config in Pack
 App.swiftpm/
 ├── Package.swift          # All config
 ├── Sources/App/           # @main app
-├── Sources/View/          # Business logic
+├── Sources/View/          # SwiftUI views
 └── Tests/Snapshots/       # UI snapshot tests
 fastlane/                  # Build/test automation
 .github/workflows/         # CI pipelines
@@ -20,7 +20,7 @@ justfile                   # Commands
 
 - **Targets**: App (executable), View (library), TemplateAppSnapshotTests (tests)
 - **Build**: xcodebuild with scheme TemplateApp
-- **Tests**: Snapshot tests via `just snapshot`
+- **Tests**: Unit and snapshot tests via `just test`/`just unit-test`/`just snapshot`
 - **Lint**: SwiftFormat/SwiftLint via `just check`/`just fix`
 
 # Environment Variables
@@ -34,6 +34,8 @@ justfile                   # Commands
 - `just open`: Open in Xcode
 - `just check`: Lint/format check
 - `just fix`: Auto-fix formatting
+- `just test`: Run all tests
+- `just unit-test`: Run unit tests
 - `just snapshot`: Run snapshot tests
 - `just run-debug`: Build and run app
 - `just siml`: List simulators
@@ -46,7 +48,7 @@ GitHub Actions: lint and test on PR/push.
 
 1. Setup: `just setup`, edit .env
 2. Develop: `just open`, make changes, `just fix`
-3. Test: `just snapshot`
+3. Test: `just test`
 4. Commit: `just check`
 
 ## Adding Dependencies
@@ -64,7 +66,8 @@ Write tests in Tests/Snapshots/, run with `just snapshot`.
 # Common Tasks
 
 - Run app: `just run-debug`
-- Run tests: `just snapshot`
+- Run tests: `just test`
+- Run snapshot tests: `just snapshot`
 - Format: `just fix`
 - Clean: `just resolve-pkg`
 

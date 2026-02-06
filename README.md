@@ -39,13 +39,14 @@ This template uses a `.swiftpm` package structure instead of a traditional `.xco
 | `just open` | Open project in Xcode |
 | `just check` | Run SwiftFormat and SwiftLint |
 | `just fix` | Auto-fix formatting issues |
+| `just test` | Run all tests |
 | `just snapshot` | Run snapshot tests |
 | `just run-debug` | Build and run on simulator |
 | `just siml` | List available simulators |
 
 ## Testing
 
-Run `just snapshot` to execute snapshot tests. Tests run automatically in CI on PR/push.
+Run `just test` to execute all tests (unit and build tests), or `just snapshot` for snapshot tests only. Tests run automatically in CI on PR/push.
 
 ## Customization
 
@@ -65,5 +66,5 @@ GitHub Actions workflows for linting and testing.
 
 1. Setup: `just setup`, edit .env
 2. Develop: `just open`, make changes, `just fix`
-3. Test: `just snapshot`
+3. Test: `just test`
 4. Commit: `just check`
